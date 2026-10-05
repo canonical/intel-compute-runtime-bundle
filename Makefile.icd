@@ -1,0 +1,46 @@
+ARCH ?= $(if $(CRAFT_ARCH_BUILD_FOR),$(CRAFT_ARCH_BUILD_FOR),$(shell dpkg --print-architecture))
+BUILD_DIR ?= $(if $(CRAFT_PART_BUILD),$(CRAFT_PART_BUILD),$(CURDIR)/.build)/icd
+DESTDIR ?= $(CRAFT_PART_INSTALL)
+
+# Paste the relevant release-note wget URLs here, without the wget prefix.
+define LEGACY_URLS
+https://github.com/intel/compute-runtime/releases/download/24.35.30872.36/intel-opencl-icd-legacy1_24.35.30872.36_amd64.deb
+endef
+
+define LATEST_URLS
+https://github.com/intel/compute-runtime/releases/download/26.22.38646.4/intel-opencl-icd_26.22.38646.4-0_amd64.deb
+https://github.com/intel/compute-runtime/releases/download/26.22.38646.4/libigdgmm12_22.10.0_amd64.deb
+endef
+
+LEGACY_DEBS := $(addprefix $(BUILD_DIR)/icd-legacy/,$(notdir $(LEGACY_URLS)))
+LATEST_DEBS := $(addprefix $(BUILD_DIR)/icd-latest/,$(notdir $(LATEST_URLS)))
+
+.PHONY: all download install
+all: download
+
+ifeq ($(ARCH),amd64)
+download: $(LEGACY_DEBS) $(LATEST_DEBS)
+
+define download_deb
+	mkdir -p "$(@D)"
+	wget -nv -O "$@.tmp" "$(filter %/$(@F),$(1))"
+	mv "$@.tmp" "$@"
+endef
+
+$(LEGACY_DEBS):
+	$(call download_deb,$(LEGACY_URLS))
+
+$(LATEST_DEBS):
+	$(call download_deb,$(LATEST_URLS))
+
+install: download
+	@test -n "$(DESTDIR)" || { echo "DESTDIR or CRAFT_PART_INSTALL must be set" >&2; exit 1; }
+	mkdir -p "$(abspath $(DESTDIR))"
+	dpkg --root="$(abspath $(DESTDIR))" --force-all -i $(foreach deb,$(LEGACY_DEBS),"$(deb)")
+	dpkg --root="$(abspath $(DESTDIR))" --force-all -i $(foreach deb,$(LATEST_DEBS),"$(deb)")
+	# Remove the unused absolute ocloc links that fail snap store review.
+	rm -f "$(abspath $(DESTDIR))/etc/alternatives/ocloc" "$(abspath $(DESTDIR))/usr/bin/ocloc"
+else
+download install:
+	@echo "Skipping Intel OpenCL ICD packages for $(ARCH) (amd64 only)"
+endif
