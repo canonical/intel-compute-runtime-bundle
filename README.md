@@ -36,4 +36,6 @@ parts:
       - BUNDLE=intel-compute-runtime
     build-packages:
       - wget
+    organize:
+      "*": (component/openvino-model-server)
 ```
