@@ -22,7 +22,7 @@ Exclude debug-symbol packages and other architectures. Keep unchanged
 dependency URLs as they are. If a required package is missing or renamed,
 report it rather than guessing a replacement.
 
-Leave `legacy.urls` and `archive.packages` unchanged unless explicitly asked
+Leave `legacy.urls` and `ubuntu.packages` unchanged unless explicitly asked
 to update them. Legacy packages use a separate upstream release line and its
 own dependency versions. See upstream's
 [legacy platform documentation](https://github.com/intel/compute-runtime/blob/master/documentation/LEGACY_PLATFORMS.md)
