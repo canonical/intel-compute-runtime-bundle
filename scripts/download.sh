@@ -15,7 +15,7 @@ mkdir -p "$download_dir"
 for list in "$@"; do
   case "$list" in
     *.urls)
-      "$scripts/list.sh" "$list" | while read -r url; do
+      "$scripts/list.sh" "$list" | while read -r url || [ -n "$url" ]; do
         deb="$download_dir/$(basename "$url")"
         if [ ! -f "$deb" ]; then
           wget -nv -O "$deb.tmp" "$url"
