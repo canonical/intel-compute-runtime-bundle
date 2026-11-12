@@ -1,0 +1,2 @@
+# Packages from the build host's Ubuntu archive, installed before the Intel packages.
+ocl-icd-libopencl1
