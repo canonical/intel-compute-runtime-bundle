@@ -5,11 +5,11 @@ the bundle that provides the GPU functionality your application needs:
 
 | Bundle | Provides |
 | --- | --- |
-| `intel-opencl-icd` | OpenCL ICDs and Intel GPU support libraries, including the components used for GPU detection and vRAM lookup with `clinfo` |
-| `intel-compute-runtime` | Intel Graphics Compiler, Level Zero runtime, and `ocloc` |
+| `intel-opencl-icd` | Current Intel OpenCL ICD and GMM library for GPU detection and VRAM lookup with `clinfo` |
+| `intel-compute-runtime` | Current Intel Graphics Compiler, Level Zero runtime, and `ocloc` |
 
 The `intel-compute-runtime` bundle also includes the OpenCL loader. Bundles are
-currently available for amd64 snaps.
+currently available for amd64 snaps. Legacy Intel GPU drivers are not included.
 
 ## Use without Snapcraft
 
