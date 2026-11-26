@@ -14,9 +14,9 @@ endif
 # legacy packages, then Intel latest packages.
 # The latest packages are installed last to override the others.
 LISTS := $(wildcard \
-	$(foreach b,$(SELECTED),bundles/$(b)/ubuntu.packages)) \
+	$(foreach b,$(SELECTED),bundles/$(b)/ubuntu.packages) \
 	$(foreach b,$(SELECTED),bundles/$(b)/legacy.urls) \
-	$(foreach b,$(SELECTED),bundles/$(b)/latest.urls)
+	$(foreach b,$(SELECTED),bundles/$(b)/latest.urls))
 
 .PHONY: all install
 
