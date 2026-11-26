@@ -10,12 +10,9 @@ ifneq ($(filter-out $(BUNDLES),$(SELECTED)),)
 $(error Unknown BUNDLE "$(BUNDLE)"; valid values are: $(BUNDLES))
 endif
 
-# Packages from the Ubuntu archive are installed first, followed by Intel
-# legacy packages, then Intel latest packages.
-# The latest packages are installed last to override the others.
+# Install packages from the Ubuntu archive first, then the current Intel packages.
 LISTS := $(wildcard \
 	$(foreach b,$(SELECTED),bundles/$(b)/ubuntu.packages) \
-	$(foreach b,$(SELECTED),bundles/$(b)/legacy.urls) \
 	$(foreach b,$(SELECTED),bundles/$(b)/latest.urls))
 
 .PHONY: all install
